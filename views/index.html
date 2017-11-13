@@ -4,6 +4,11 @@
   <h3>Pages</h3>
   <hr>
   <ul>
-      <li><a href="#">{{pages}}</a></li>
+    {% for page in pages %}
+      <li>
+        <a href='/wiki/{{page.urlTitle}}'><h3>{{page.title}}</h3></a>
+        <div>{{page.content}}</div>
+      </li>
+      {% endfor %}
   </ul>
 {% endblock %}

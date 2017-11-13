@@ -4,13 +4,13 @@ const routes = require('./routes/index');
 const path = require('path');
 const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
-const models = require('./models')
+const models = require('./models');
 app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.urlencoded({ extended: false }))
 nunjucks.configure('views', {noCache: true});
 app.set('view engine', 'html');
 app.engine('html', nunjucks.render);
-models.User.sync({force: true})
+models.User.sync({})
 .then(function () {
     return models.Page.sync({})
 })
@@ -22,4 +22,9 @@ models.User.sync({force: true})
 .catch(function(err) {
     console.log(err)
 })
+
+.catch(console.error);
+
+
+
 app.use('/', routes)

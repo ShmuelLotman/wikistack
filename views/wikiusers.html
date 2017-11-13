@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<ul>
+        {% for person in users %}
+          <li><a href="/users/{{ person.id }}"><h3>{{ person.name }} </h3></a>
+        </li>
+        {% endfor %}
+</ul>
+{% endblock %}

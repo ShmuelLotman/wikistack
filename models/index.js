@@ -19,24 +19,22 @@ const Page = db.define('page', {
     status: {
         type: Sequelize.ENUM('open', 'closed')
     },
-    author: {
-        type: Sequelize.TEXT,
-        allowNull: true
-    }
+    tags: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        defaultValue: []
+    },
 },
 {
     getterMethods: {
         route() {
-            return '/wiki' + this.urlTitle
+            return '/wiki/' + this.urlTitle
         },
     }
 });
 Page.beforeValidate('page', function(str) {
-    if (str.urlTitle) {
-        str.urlTitle =  str.urlTitle.replace(/\s+/g, '_').replace(/\W/g, '');
-      } else {
-        str.urlTitle =  Math.random().toString(36).substring(2, 7);
-      }
+    if (!str.urlTitle) {
+        str.urlTitle =  str.title.replace(/\s+/g, '_').replace(/\W/g, '');
+      } 
 })
 const User = db.define('user', {
     name: {
@@ -49,8 +47,9 @@ const User = db.define('user', {
         isEmail: true
     }
 });
-
+Page.belongsTo(User, { as: 'author' });
 module.exports = {
+    db: db,
     Page: Page,
     User: User
   };
